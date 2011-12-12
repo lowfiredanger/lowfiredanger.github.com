@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Javascript, | Low Fire Danger]]></title>
+  <link href="http://lowfiredanger.github.com/blog/categories/javascript-/atom.xml" rel="self"/>
+  <link href="http://lowfiredanger.github.com/"/>
+  <updated>2011-12-13T09:26:07+11:00</updated>
+  <id>http://lowfiredanger.github.com/</id>
+  <author>
+    <name><![CDATA[Low Fire Danger]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Extending Backbone classes in CoffeeScript]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/12/12/extending-backbone-classes-in-coffeescript/"/>
+    <updated>2011-12-12T22:10:00+11:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/12/12/extending-backbone-classes-in-coffeescript</id>
+    <content type="html"><![CDATA[<p>Here's a very quick how-to on extending backbone classes and over riding their methods in coffeescript. You can even call super; that will let you call the original method once you're complete.</p>
+
+<p>``` coffeescript greeter.js
+class Greeter extends Backbone.View</p>
+
+<pre><code>initialize: () -&gt;
+# Initialize things here
+
+greet: -&gt;
+    alert 'Hello'
+</code></pre>
+
+<p>```</p>
+
+<p>``` coffeescript multi_lingal_greeter.js
+class MultiLingalGreeter extends Greeter</p>
+
+<pre><code>initialize: () -&gt;
+# Initialize things here
+
+greet: -&gt;
+    alert 'Bonjour'
+    super
+</code></pre>
+
+<p>```</p>
+
+<p>And now we can create a new instance of the <code>MultiLingalGreeter</code> class then call the greet method. We will get two alert boxes, the first one will say Bonjour, followed by Hello. This happens because <code>super</code> is being called, which calls the original method of the class</p>
+
+<p><code>javascript
+greeter = new MultiLingalGreeter();
+greeter.greet() // Alerts 'Bonjour' followed by 'Hello'
+</code></p>
+
+<p>What happens when we create another class that extends the <code>MultiLingalGreeter</code>? Will calling super inside <code>greet()</code> execute the Greeter class directly or only the method inside <code>MultiLingalGreeter</code>?</p>
+
+<p>``` coffeescript drunk_greeter.js
+class DrunkGreeter extends MultiLingalGreeter</p>
+
+<pre><code>initialize: () -&gt;
+# Initialize things here
+
+greet: -&gt;
+    alert 'Aarhohhoah *spew*'
+    super
+</code></pre>
+
+<p>```</p>
+
+<p>Turns out, it'll only call the method inside <code>MultiLingalGreeter</code>. The <code>super</code> method inside <code>MultiLingalGreeter</code> will then call the original <code>Greeter</code> class.
+So you'll get alerts in the following order:</p>
+
+<ol>
+<li>Aarhohhoah *spew*</li>
+<li>Bonjour (called from the <code>super</code> inside <code>DrunkGreeter</code>)</li>
+<li>Hello (called from the <code>super</code> inside <code>MultiLingalGreeter</code>)</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Backbone.js mixins]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/11/14/backbone-dot-js-mixins/"/>
+    <updated>2011-11-14T00:49:00+11:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/11/14/backbone-dot-js-mixins</id>
+    <content type="html"><![CDATA[<p><a href="http://documentcloud.github.com/backbone/">Backbone.js</a> is a great javascript mvc framework to create frontend js heavy applications.</p>
+
+<p>What happens when there you start building your backbone.js app but find that there is substantial boilerplate code that you want to reuse?</p>
+
+<p>One cool feature, that's not necessarily a part of backbone.js is mixins. If you're familiar with Ruby, then it should be a familiar concept. Mixins are basically a way to inherit another class, or module and be able to use the inherited class's functions/methods.</p>
+
+<p>To create a mixin in backbone, you use underscores nifty <code>_.extend()</code> method to allow an object to inherit some other objects methods.</p>
+
+<p>Take the following silly example. If you wanted to reuse the functions in the ComplexMaths object, how would you do it with <code>_.extend()</code>?</p>
+
+<p>``` javascript complex_maths.js
+var ComplexMaths = {</p>
+
+<pre><code>addition: function(number1, number2){
+    return number1 + number2;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Simple</p>
+
+<p>``` javascript calculator.js</p>
+
+<p>Calculator = Backbone.View.extend({
+  initialize: function() {</p>
+
+<pre><code>_.bindAll(this, "blah...");
+</code></pre>
+
+<p>  }</p>
+
+<p>  // ..
+  // ..
+  // ..</p>
+
+<p>});</p>
+
+<p>// Mixin here
+_.extend(Calculator.prototype, ComplexMaths);</p>
+
+<p>```</p>
+
+<p>The final line of the script above, underscore accepts the destination object <code>Calculator.prototype</code> and duplicates the properties inside source object <code>ComplexMaths</code> into <code>Calculator.prototype</code>.</p>
+
+<p>Now you have the power to create whole libraries of reusable useful stuff!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[lightModal - a lightweight lightbox/modal in coffeescript]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/"/>
+    <updated>2011-11-12T22:35:00+11:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript</id>
+    <content type="html"><![CDATA[<p>I recently made a really lightweight modal box to use on one of our projects <a href="http://lessplan.com" title="Easily manage Lesson plans for teachers">LessPlan</a>. There was a need to have a instance of tinyMCE within a modal/lightbox when creating a lesson plan.</p>
+
+<p>What I found was most existing modal/lightbox plugins was that they were incompatible with tinyMCE because they cloned the contents of a specified div before placing it into the actual lightbox container.</p>
+
+<p>LightModal does away with the cloning and makes the content itself turn into a lightbox, therefore throwing away the need to clone the html.</p>
+
+<p>It's written in CoffeeScript as a jquery plugin and includes tests written with Jasmine BDD testing framework. Released under the MIT licence.</p>
+
+<p><a href="/opensource/lightModal">Get the source and demo here</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Maintainable JS MVC with Backbone.js]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/"/>
+    <updated>2011-07-05T20:33:00+10:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js</id>
+    <content type="html"><![CDATA[<p>I've recently started doing some work on a javascript intensive web application; which called for a more thorough and
+maintainable approach to development of the front end js code. One of the most interesting thing's I've come across
+is an open source js library called <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>.</p>
+
+<p>Backbone.js is a lightweight MVC framework for javascript; it lets you organise your code more nicely and in turn makes it more maintainable.</p>
+
+<p>Here are the resources I found most useful.</p>
+
+<ul>
+<li><a href="http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/">http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/</a></li>
+<li><a href="http://www.jamesyu.org/2011/02/09/backbone.js-tutorial-with-rails-part-2/">http://www.jamesyu.org/2011/02/09/backbone.js-tutorial-with-rails-part-2/</a></li>
+<li><a href="http://documentcloud.github.com/backbone/docs/todos.html">http://documentcloud.github.com/backbone/docs/todos.html</a></li>
+<li><a href="http://backbonetutorials.com/">http://backbonetutorials.com/</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

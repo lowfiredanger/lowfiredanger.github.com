@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Javascript | Low Fire Danger]]></title>
+  <link href="http://lowfiredanger.github.com/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://lowfiredanger.github.com/"/>
+  <updated>2011-12-13T09:26:07+11:00</updated>
+  <id>http://lowfiredanger.github.com/</id>
+  <author>
+    <name><![CDATA[Low Fire Danger]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Closures in javascript]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/04/20/closures-in-javascript/"/>
+    <updated>2011-04-20T21:10:00+10:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/04/20/closures-in-javascript</id>
+    <content type="html"><![CDATA[<p>To understand closures, you should first understand that functions in javascript can be used as variables as below.</p>
+
+<h2>Functions as variables</h2>
+
+<p>Within the Javascript language, functions are treated as variables. This means that you can pass functions around like variables. which lets you doing something like this:</p>
+
+<p>``` javascript</p>
+
+<pre><code>function createUselessFunction(value){
+    return function(){
+        alert(value);
+    };
+}
+
+var newFunction = createUselessFunction('cat');
+
+newFunction(); //Alerts 'cat'
+
+//Alternative syntax
+createUselessFunction('dog')(); //Alerts 'dog'
+</code></pre>
+
+<p>```</p>
+
+<h2>Closures</h2>
+
+<p>Closures are basicly functions that enclose variables. Here is an example.</p>
+
+<p>``` javascript</p>
+
+<pre><code>function anotherUselessFunction(value){
+    var localVariable = "I am local";
+
+    return function(){
+        alert(value + ' ' + localVariable);
+    }
+}
+
+var uselessFunction = anotherUselessFunction('WOW!');
+</code></pre>
+
+<p>```</p>
+
+<p>What happens when we execute uselessFunction()? Would localVariable be accessible from function returned by uselessFunction()? It turns out that it is accessible.</p>
+
+<pre><code>uselessFunction(); //Alerts 'WOW! I am Local'
+</code></pre>
+
+<p>So we see that javascript "closes" in local variables and allows returned functions to access these variables. An example use for this behaviour is described below. This example shows how we can create a custom multiplier.</p>
+
+<p>``` javascript</p>
+
+<pre><code>function multiplier(amount){
+    return function(number){
+        alert(amount * number);
+    };
+}
+
+var timesFive = multiplier(5);
+
+// 5 x 3
+timesFive(3); //Alerts 15
+// 5 x 12
+timesFive(12); //Alerts 60
+</code></pre>
+
+<p>```
+Notice how 5 gets stored inside the timesFive function and we can reuse the timesFive variable as a function multiple times?</p>
+
+<p>Javascript is whacky and fun!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Inheritance in Object Oriented Javascript]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/04/15/inheritance-in-object-oriented-javascript/"/>
+    <updated>2011-04-15T21:21:00+10:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/04/15/inheritance-in-object-oriented-javascript</id>
+    <content type="html"><![CDATA[<p>Writing maintainable and reusable code in javascript is difficult when writing it functionally, especially in larger applications. Writing object oriented javascript is a useful skill you should learn if you plan to spend a large portion of your time developing the front-end of web applications.</p>
+
+<p>In order to make objects in javascript reusable, child classes should be able to inherit methods and properties of their parent class. I'll be going though some concepts of "classical" inheritance; as there are a few ways to achieve inheritance in javascript. This includes:</p>
+
+<ul>
+<li>Prototypal</li>
+<li>Using Mix-ins (Great if you have a ruby background)</li>
+<li>Borrowing methods using call or apply</li>
+</ul>
+
+
+<p>I'll discuss these methods in a future article. Theres no "more" correct method for inheritance, I believe it's a matter of opinion and comfort. For now I'll just go through some concepts of classical inheritance; because most people are more familiar with classical inheritance from languages such as java, php, C++ etc.</p>
+
+<p>Below is some code to demonstrate the basics of creating a class and instantiating that class.</p>
+
+<p>``` javascript</p>
+
+<pre><code>//Pet class
+var Pet = function(name){
+    this.name = name || "Snowy";
+
+    this.move = function(){
+        return alert(this.name + " is walking");
+    }
+}
+
+//Creating an instance of Pet
+var myBird = new Pet("Tweety");
+myBird.move(); //Alerts 'Tweety is walking'
+</code></pre>
+
+<p>```</p>
+
+<p>In the above example, we define the class "Pet" (note the var name is capitalised as a convention to indicate this is a constructor function (Constructor functions are basically any function that you can create instances of, i.e. classes)). We also give the Pet class an instance variable "name" (the name of the pet). A instance method is also given to the the Pet class "move".</p>
+
+<p>We then create a new instance of Pet for our bird named "Tweety". We then call the "move" method, which alerts us with "Tweety is walking". So that sounds about right, except birds mostly don't walk, they fly. So we should extend the Pet class to accommodate for pet birds.</p>
+
+<p>``` javascript</p>
+
+<pre><code>var Pet = function(name){
+    this.name = name || "Snowy";
+
+    this.move = function(){
+        return alert(this.name + " is walking");
+    }
+}
+
+//Create an placeholder Class
+function Bird(){};
+
+//Inherit the Pet class into the Bird class
+Bird.prototype = new Pet();
+//Over-ride the move function using prototype
+Bird.prototype.move = function(){
+    return alert(this.name + " is flying");
+}
+
+var myBird = new Bird('Tweety');
+myBird.move(); //Alerts 'Snowy is flying'
+</code></pre>
+
+<p>```</p>
+
+<p>That looks all great and seems to work well; except it outputs "Snowy is flying" instead of "Tweety is flying"! What is happening here? It turns out the child class "Bird" does not pass the constructor parameters to the parent. So that is not a really ideal solution to this problem. We need to pass in the constructor object using apply().</p>
+
+<p>``` javascript</p>
+
+<pre><code>var Pet = function(name){
+    this.name = name || "Snowy";
+
+    this.move = function(){
+        return alert(this.name + " is walking");
+    }
+}
+
+function Bird(name){
+    Pet.apply(this, arguments);
+};
+
+Bird.prototype = new Pet();
+Bird.prototype.move = function(){
+    return alert(this.name + " is flying");
+}
+
+var myBird = new Bird('Tweety');
+myBird.move(); //Alerts 'Tweety is walking'
+</code></pre>
+
+<p>```</p>
+
+<p>Now we got "Tweety" appearing in the move() method, but now the method is coming from the original Class; so instead of "Tweety is flying", we get "Tweety is walking". It turns out that we the method first looks inside of the parent class for the method before visiting the prototype.</p>
+
+<p>``` javascript</p>
+
+<pre><code>var Pet = function(name){
+    this.name = name || "Snowy";
+}
+
+Pet.prototype.move = function(){
+    return alert(this.name + " is walking");
+}
+
+function Bird(name){
+    Pet.apply(this, arguments);
+};
+
+Bird.prototype = new Pet();
+Bird.prototype.move = function(){
+    return alert(this.name + " is flying");
+}
+
+var myBird = new Bird('tweety');
+myBird.move(); //Alerts 'Tweety is flying'
+</code></pre>
+
+<p>```</p>
+
+<p>We have moved the method of move() outside of Pet into a prototype function. This allows the method to be over-ridden by the Bird class.</p>
+
+<p>Thats all for now, hope that was useful!</p>
+]]></content>
+  </entry>
+  
+</feed>

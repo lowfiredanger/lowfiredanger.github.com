@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Inheritance in Object Oriented Javascript - Low Fire Danger</title>
+  <meta name="author" content="Low Fire Danger">
+
+  
+  <meta name="description" content="Writing maintainable and reusable code in javascript is difficult when writing it functionally, especially in larger applications. Writing object &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lowfiredanger.github.com/blog/2011/04/15/inheritance-in-object-oriented-javascript">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Low Fire Danger" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Low Fire Danger</a></h1>
+  
+    <h2>Engineered web applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lowfiredanger.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+<ul class="main-navigation">
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/opensource">Open sourced</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Inheritance in Object Oriented Javascript</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-15T21:21:00+10:00" pubdate data-updated="true">Apr 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Writing maintainable and reusable code in javascript is difficult when writing it functionally, especially in larger applications. Writing object oriented javascript is a useful skill you should learn if you plan to spend a large portion of your time developing the front-end of web applications.</p>
+
+<p>In order to make objects in javascript reusable, child classes should be able to inherit methods and properties of their parent class. I&#8217;ll be going though some concepts of &#8220;classical&#8221; inheritance; as there are a few ways to achieve inheritance in javascript. This includes:</p>
+
+<ul>
+<li>Prototypal</li>
+<li>Using Mix-ins (Great if you have a ruby background)</li>
+<li>Borrowing methods using call or apply</li>
+</ul>
+
+
+<p>I&#8217;ll discuss these methods in a future article. Theres no &#8220;more&#8221; correct method for inheritance, I believe it&#8217;s a matter of opinion and comfort. For now I&#8217;ll just go through some concepts of classical inheritance; because most people are more familiar with classical inheritance from languages such as java, php, C++ etc.</p>
+
+<p>Below is some code to demonstrate the basics of creating a class and instantiating that class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Pet class</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Creating an instance of Pet</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">(</span><span class="s2">&quot;Tweety&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Tweety is walking&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the above example, we define the class &#8220;Pet&#8221; (note the var name is capitalised as a convention to indicate this is a constructor function (Constructor functions are basically any function that you can create instances of, i.e. classes)). We also give the Pet class an instance variable &#8220;name&#8221; (the name of the pet). A instance method is also given to the the Pet class &#8220;move&#8221;.</p>
+
+<p>We then create a new instance of Pet for our bird named &#8220;Tweety&#8221;. We then call the &#8220;move&#8221; method, which alerts us with &#8220;Tweety is walking&#8221;. So that sounds about right, except birds mostly don&#8217;t walk, they fly. So we should extend the Pet class to accommodate for pet birds.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Create an placeholder Class</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Bird</span><span class="p">(){};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Inherit the Pet class into the Bird class</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">();</span>
+</span><span class='line'><span class="c1">//Over-ride the move function using prototype</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is flying&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bird</span><span class="p">(</span><span class="s1">&#39;Tweety&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Snowy is flying&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>That looks all great and seems to work well; except it outputs &#8220;Snowy is flying&#8221; instead of &#8220;Tweety is flying&#8221;! What is happening here? It turns out the child class &#8220;Bird&#8221; does not pass the constructor parameters to the parent. So that is not a really ideal solution to this problem. We need to pass in the constructor object using apply().</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Bird</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">Pet</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">();</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is flying&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bird</span><span class="p">(</span><span class="s1">&#39;Tweety&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Tweety is walking&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we got &#8220;Tweety&#8221; appearing in the move() method, but now the method is coming from the original Class; so instead of &#8220;Tweety is flying&#8221;, we get &#8220;Tweety is walking&#8221;. It turns out that we the method first looks inside of the parent class for the method before visiting the prototype.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Pet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Bird</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">Pet</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">();</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is flying&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bird</span><span class="p">(</span><span class="s1">&#39;tweety&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Tweety is flying&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have moved the method of move() outside of Pet into a prototype function. This allows the method to be over-ridden by the Bird class.</p>
+
+<p>Thats all for now, hope that was useful!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Low Fire Danger</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-15T21:21:00+10:00" pubdate data-updated="true">Apr 15<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>Javascript</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/04/13/validate-timezones-in-ruby-on-rails/" title="Previous Post: Validate timezones in ruby on rails">&laquo; Validate timezones in ruby on rails</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/04/20/closures-in-javascript/" title="next Post: Closures in javascript">Closures in javascript &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/">Extending Backbone classes in CoffeeScript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/14/backbone-dot-js-mixins/">Backbone.js mixins</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/13/low-fire-dangers-new-blog/">Low Fire Danger's new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/">lightModal - a lightweight lightbox/modal in coffeescript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/">Maintainable JS MVC with Backbone.js</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - Low Fire Danger -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

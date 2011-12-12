@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Extending Backbone classes in CoffeeScript - Low Fire Danger</title>
+  <meta name="author" content="Low Fire Danger">
+
+  
+  <meta name="description" content="Here&#8217;s a very quick how-to on extending backbone classes and over riding their methods in coffeescript. You can even call super; that will let &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lowfiredanger.github.com/blog/2011/12/12/extending-backbone-classes-in-coffeescript">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Low Fire Danger" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Low Fire Danger</a></h1>
+  
+    <h2>Engineered web applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lowfiredanger.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+<ul class="main-navigation">
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/opensource">Open sourced</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Extending Backbone Classes in CoffeeScript</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-12T22:10:00+11:00" pubdate data-updated="true">Dec 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Here&#8217;s a very quick how-to on extending backbone classes and over riding their methods in coffeescript. You can even call super; that will let you call the original method once you&#8217;re complete.</p>
+
+<figure class='code'><figcaption><span>greeter.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">Greeter</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+</span><span class='line'>      <span class="c1"># Initialize things here</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">greet: </span><span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">alert</span> <span class="s1">&#39;Hello&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>multi_lingal_greeter.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">MultiLingalGreeter</span> <span class="k">extends</span> <span class="nx">Greeter</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+</span><span class='line'>  <span class="c1"># Initialize things here</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">greet: </span><span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">alert</span> <span class="s1">&#39;Bonjour&#39;</span>
+</span><span class='line'>      <span class="k">super</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now we can create a new instance of the <code>MultiLingalGreeter</code> class then call the greet method. We will get two alert boxes, the first one will say Bonjour, followed by Hello. This happens because <code>super</code> is being called, which calls the original method of the class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">greeter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MultiLingalGreeter</span><span class="p">();</span>
+</span><span class='line'><span class="nx">greeter</span><span class="p">.</span><span class="nx">greet</span><span class="p">()</span> <span class="c1">// Alerts &#39;Bonjour&#39; followed by &#39;Hello&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What happens when we create another class that extends the <code>MultiLingalGreeter</code>? Will calling super inside <code>greet()</code> execute the Greeter class directly or only the method inside <code>MultiLingalGreeter</code>?</p>
+
+<figure class='code'><figcaption><span>drunk_greeter.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">DrunkGreeter</span> <span class="k">extends</span> <span class="nx">MultiLingalGreeter</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+</span><span class='line'>  <span class="c1"># Initialize things here</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">greet: </span><span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">alert</span> <span class="s1">&#39;Aarhohhoah *spew*&#39;</span>
+</span><span class='line'>      <span class="k">super</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Turns out, it&#8217;ll only call the method inside <code>MultiLingalGreeter</code>. The <code>super</code> method inside <code>MultiLingalGreeter</code> will then call the original <code>Greeter</code> class.
+So you&#8217;ll get alerts in the following order:</p>
+
+<ol>
+<li>Aarhohhoah *spew*</li>
+<li>Bonjour (called from the <code>super</code> inside <code>DrunkGreeter</code>)</li>
+<li>Hello (called from the <code>super</code> inside <code>MultiLingalGreeter</code>)</li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Low Fire Danger</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-12T22:10:00+11:00" pubdate data-updated="true">Dec 12<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript-/'>Javascript,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/11/14/backbone-dot-js-mixins/" title="Previous Post: Backbone.js mixins">&laquo; Backbone.js mixins</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/">Extending Backbone classes in CoffeeScript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/14/backbone-dot-js-mixins/">Backbone.js mixins</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/13/low-fire-dangers-new-blog/">Low Fire Danger's new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/">lightModal - a lightweight lightbox/modal in coffeescript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/">Maintainable JS MVC with Backbone.js</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - Low Fire Danger -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

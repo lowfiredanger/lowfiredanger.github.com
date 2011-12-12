@@ -1,0 +1,1005 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Low Fire Danger</title>
+  <meta name="author" content="Low Fire Danger">
+
+  
+  <meta name="description" content="Here&#8217;s a very quick how-to on extending backbone classes and over riding their methods in coffeescript. You can even call super; that will let &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lowfiredanger.github.com/blog">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Low Fire Danger" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Low Fire Danger</a></h1>
+  
+    <h2>Engineered web applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lowfiredanger.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+<ul class="main-navigation">
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/opensource">Open sourced</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/">Extending Backbone Classes in CoffeeScript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-12T22:10:00+11:00" pubdate data-updated="true">Dec 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Here&#8217;s a very quick how-to on extending backbone classes and over riding their methods in coffeescript. You can even call super; that will let you call the original method once you&#8217;re complete.</p>
+
+<figure class='code'><figcaption><span>greeter.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">Greeter</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+</span><span class='line'>      <span class="c1"># Initialize things here</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">greet: </span><span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">alert</span> <span class="s1">&#39;Hello&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>multi_lingal_greeter.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">MultiLingalGreeter</span> <span class="k">extends</span> <span class="nx">Greeter</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+</span><span class='line'>  <span class="c1"># Initialize things here</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">greet: </span><span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">alert</span> <span class="s1">&#39;Bonjour&#39;</span>
+</span><span class='line'>      <span class="k">super</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now we can create a new instance of the <code>MultiLingalGreeter</code> class then call the greet method. We will get two alert boxes, the first one will say Bonjour, followed by Hello. This happens because <code>super</code> is being called, which calls the original method of the class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">greeter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MultiLingalGreeter</span><span class="p">();</span>
+</span><span class='line'><span class="nx">greeter</span><span class="p">.</span><span class="nx">greet</span><span class="p">()</span> <span class="c1">// Alerts &#39;Bonjour&#39; followed by &#39;Hello&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What happens when we create another class that extends the <code>MultiLingalGreeter</code>? Will calling super inside <code>greet()</code> execute the Greeter class directly or only the method inside <code>MultiLingalGreeter</code>?</p>
+
+<figure class='code'><figcaption><span>drunk_greeter.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">DrunkGreeter</span> <span class="k">extends</span> <span class="nx">MultiLingalGreeter</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+</span><span class='line'>  <span class="c1"># Initialize things here</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">greet: </span><span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">alert</span> <span class="s1">&#39;Aarhohhoah *spew*&#39;</span>
+</span><span class='line'>      <span class="k">super</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Turns out, it&#8217;ll only call the method inside <code>MultiLingalGreeter</code>. The <code>super</code> method inside <code>MultiLingalGreeter</code> will then call the original <code>Greeter</code> class.
+So you&#8217;ll get alerts in the following order:</p>
+
+<ol>
+<li>Aarhohhoah *spew*</li>
+<li>Bonjour (called from the <code>super</code> inside <code>DrunkGreeter</code>)</li>
+<li>Hello (called from the <code>super</code> inside <code>MultiLingalGreeter</code>)</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/14/backbone-dot-js-mixins/">Backbone.js Mixins</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-14T00:49:00+11:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://documentcloud.github.com/backbone/">Backbone.js</a> is a great javascript mvc framework to create frontend js heavy applications.</p>
+
+<p>What happens when there you start building your backbone.js app but find that there is substantial boilerplate code that you want to reuse?</p>
+
+<p>One cool feature, that&#8217;s not necessarily a part of backbone.js is mixins. If you&#8217;re familiar with Ruby, then it should be a familiar concept. Mixins are basically a way to inherit another class, or module and be able to use the inherited class&#8217;s functions/methods.</p>
+
+<p>To create a mixin in backbone, you use underscores nifty <code>_.extend()</code> method to allow an object to inherit some other objects methods.</p>
+
+<p>Take the following silly example. If you wanted to reuse the functions in the ComplexMaths object, how would you do it with <code>_.extend()</code>?</p>
+
+<figure class='code'><figcaption><span>complex_maths.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">ComplexMaths</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">addition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">number1</span><span class="p">,</span> <span class="nx">number2</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">number1</span> <span class="o">+</span> <span class="nx">number2</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simple</p>
+
+<figure class='code'><figcaption><span>calculator.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Calculator</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">_</span><span class="p">.</span><span class="nx">bindAll</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;blah...&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ..</span>
+</span><span class='line'>  <span class="c1">// ..</span>
+</span><span class='line'>  <span class="c1">// ..</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Mixin here</span>
+</span><span class='line'><span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Calculator</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">ComplexMaths</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The final line of the script above, underscore accepts the destination object <code>Calculator.prototype</code> and duplicates the properties inside source object <code>ComplexMaths</code> into <code>Calculator.prototype</code>.</p>
+
+<p>Now you have the power to create whole libraries of reusable useful stuff!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/13/low-fire-dangers-new-blog/">Low Fire Danger&#8217;s New Blog</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-13T13:57:00+11:00" pubdate data-updated="true">Nov 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This will hopefully be a more permanent blog that my team and I can use to write up about interesting things in web application development.</p>
+
+<p>I&#8217;ll be slowly migrating over the previous blog contents over the next few weeks!</p>
+
+<p>Previous Low Fire Danger blogs reside at the following locations:</p>
+
+<ul>
+<li><a href="http://lowfiredanger.heroku.com">http://lowfiredanger.heroku.com</a></li>
+<li><a href="http://lowfiredanger.posterous.com">http://lowfiredanger.posterous.com</a></li>
+</ul>
+
+
+<p>For the curious, we&#8217;re using <a href="http://octopress.org">Octopress</a> for our blogging engine.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/">lightModal - a Lightweight Lightbox/modal in Coffeescript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-12T22:35:00+11:00" pubdate data-updated="true">Nov 12<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I recently made a really lightweight modal box to use on one of our projects <a href="http://lessplan.com" title="Easily manage Lesson plans for teachers">LessPlan</a>. There was a need to have a instance of tinyMCE within a modal/lightbox when creating a lesson plan.</p>
+
+<p>What I found was most existing modal/lightbox plugins was that they were incompatible with tinyMCE because they cloned the contents of a specified div before placing it into the actual lightbox container.</p>
+
+<p>LightModal does away with the cloning and makes the content itself turn into a lightbox, therefore throwing away the need to clone the html.</p>
+
+<p>It&#8217;s written in CoffeeScript as a jquery plugin and includes tests written with Jasmine BDD testing framework. Released under the MIT licence.</p>
+
+<p><a href="/opensource/lightModal">Get the source and demo here</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/">Maintainable JS MVC With Backbone.js</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-05T20:33:00+10:00" pubdate data-updated="true">Jul 5<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve recently started doing some work on a javascript intensive web application; which called for a more thorough and
+maintainable approach to development of the front end js code. One of the most interesting thing&#8217;s I&#8217;ve come across
+is an open source js library called <a href="http://documentcloud.github.com/backbone/">Backbone.js</a>.</p>
+
+<p>Backbone.js is a lightweight MVC framework for javascript; it lets you organise your code more nicely and in turn makes it more maintainable.</p>
+
+<p>Here are the resources I found most useful.</p>
+
+<ul>
+<li><a href="http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/">http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/</a></li>
+<li><a href="http://www.jamesyu.org/2011/02/09/backbone.js-tutorial-with-rails-part-2/">http://www.jamesyu.org/2011/02/09/backbone.js-tutorial-with-rails-part-2/</a></li>
+<li><a href="http://documentcloud.github.com/backbone/docs/todos.html">http://documentcloud.github.com/backbone/docs/todos.html</a></li>
+<li><a href="http://backbonetutorials.com/">http://backbonetutorials.com/</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/20/closures-in-javascript/">Closures in Javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-20T21:10:00+10:00" pubdate data-updated="true">Apr 20<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>To understand closures, you should first understand that functions in javascript can be used as variables as below.</p>
+
+<h2>Functions as variables</h2>
+
+<p>Within the Javascript language, functions are treated as variables. This means that you can pass functions around like variables. which lets you doing something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">createUselessFunction</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">newFunction</span> <span class="o">=</span> <span class="nx">createUselessFunction</span><span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">newFunction</span><span class="p">();</span> <span class="c1">//Alerts &#39;cat&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Alternative syntax</span>
+</span><span class='line'><span class="nx">createUselessFunction</span><span class="p">(</span><span class="s1">&#39;dog&#39;</span><span class="p">)();</span> <span class="c1">//Alerts &#39;dog&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Closures</h2>
+
+<p>Closures are basicly functions that enclose variables. Here is an example.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">anotherUselessFunction</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">localVariable</span> <span class="o">=</span> <span class="s2">&quot;I am local&quot;</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="nx">value</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">localVariable</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">uselessFunction</span> <span class="o">=</span> <span class="nx">anotherUselessFunction</span><span class="p">(</span><span class="s1">&#39;WOW!&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What happens when we execute uselessFunction()? Would localVariable be accessible from function returned by uselessFunction()? It turns out that it is accessible.</p>
+
+<pre><code>uselessFunction(); //Alerts 'WOW! I am Local'
+</code></pre>
+
+<p>So we see that javascript &#8220;closes&#8221; in local variables and allows returned functions to access these variables. An example use for this behaviour is described below. This example shows how we can create a custom multiplier.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">multiplier</span><span class="p">(</span><span class="nx">amount</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">number</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="nx">amount</span> <span class="o">*</span> <span class="nx">number</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">timesFive</span> <span class="o">=</span> <span class="nx">multiplier</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 5 x 3</span>
+</span><span class='line'><span class="nx">timesFive</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">//Alerts 15</span>
+</span><span class='line'><span class="c1">// 5 x 12</span>
+</span><span class='line'><span class="nx">timesFive</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span> <span class="c1">//Alerts 60</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice how 5 gets stored inside the timesFive function and we can reuse the timesFive variable as a function multiple times?</p>
+
+<p>Javascript is whacky and fun!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/15/inheritance-in-object-oriented-javascript/">Inheritance in Object Oriented Javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-15T21:21:00+10:00" pubdate data-updated="true">Apr 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Writing maintainable and reusable code in javascript is difficult when writing it functionally, especially in larger applications. Writing object oriented javascript is a useful skill you should learn if you plan to spend a large portion of your time developing the front-end of web applications.</p>
+
+<p>In order to make objects in javascript reusable, child classes should be able to inherit methods and properties of their parent class. I&#8217;ll be going though some concepts of &#8220;classical&#8221; inheritance; as there are a few ways to achieve inheritance in javascript. This includes:</p>
+
+<ul>
+<li>Prototypal</li>
+<li>Using Mix-ins (Great if you have a ruby background)</li>
+<li>Borrowing methods using call or apply</li>
+</ul>
+
+
+<p>I&#8217;ll discuss these methods in a future article. Theres no &#8220;more&#8221; correct method for inheritance, I believe it&#8217;s a matter of opinion and comfort. For now I&#8217;ll just go through some concepts of classical inheritance; because most people are more familiar with classical inheritance from languages such as java, php, C++ etc.</p>
+
+<p>Below is some code to demonstrate the basics of creating a class and instantiating that class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Pet class</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Creating an instance of Pet</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">(</span><span class="s2">&quot;Tweety&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Tweety is walking&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the above example, we define the class &#8220;Pet&#8221; (note the var name is capitalised as a convention to indicate this is a constructor function (Constructor functions are basically any function that you can create instances of, i.e. classes)). We also give the Pet class an instance variable &#8220;name&#8221; (the name of the pet). A instance method is also given to the the Pet class &#8220;move&#8221;.</p>
+
+<p>We then create a new instance of Pet for our bird named &#8220;Tweety&#8221;. We then call the &#8220;move&#8221; method, which alerts us with &#8220;Tweety is walking&#8221;. So that sounds about right, except birds mostly don&#8217;t walk, they fly. So we should extend the Pet class to accommodate for pet birds.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Create an placeholder Class</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Bird</span><span class="p">(){};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Inherit the Pet class into the Bird class</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">();</span>
+</span><span class='line'><span class="c1">//Over-ride the move function using prototype</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is flying&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bird</span><span class="p">(</span><span class="s1">&#39;Tweety&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Snowy is flying&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>That looks all great and seems to work well; except it outputs &#8220;Snowy is flying&#8221; instead of &#8220;Tweety is flying&#8221;! What is happening here? It turns out the child class &#8220;Bird&#8221; does not pass the constructor parameters to the parent. So that is not a really ideal solution to this problem. We need to pass in the constructor object using apply().</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Bird</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">Pet</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">();</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is flying&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bird</span><span class="p">(</span><span class="s1">&#39;Tweety&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Tweety is walking&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we got &#8220;Tweety&#8221; appearing in the move() method, but now the method is coming from the original Class; so instead of &#8220;Tweety is flying&#8221;, we get &#8220;Tweety is walking&#8221;. It turns out that we the method first looks inside of the parent class for the method before visiting the prototype.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s2">&quot;Snowy&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Pet</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is walking&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Bird</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">Pet</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pet</span><span class="p">();</span>
+</span><span class='line'><span class="nx">Bird</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is flying&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myBird</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bird</span><span class="p">(</span><span class="s1">&#39;tweety&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">myBird</span><span class="p">.</span><span class="nx">move</span><span class="p">();</span> <span class="c1">//Alerts &#39;Tweety is flying&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have moved the method of move() outside of Pet into a prototype function. This allows the method to be over-ridden by the Bird class.</p>
+
+<p>Thats all for now, hope that was useful!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/13/validate-timezones-in-ruby-on-rails/">Validate Timezones in Ruby on Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-13T18:41:00+10:00" pubdate data-updated="true">Apr 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Rails makes it too simple to allow users to specify their timezone. All you have to do is add the following to your form:</p>
+
+<figure class='code'><figcaption><span>_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># ..</span>
+</span><span class='line'><span class="o">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">time_zone_select</span> <span class="ss">:time_zone</span><span class="p">,</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">.</span><span class="n">us_zones</span> <span class="o">%&gt;</span>
+</span><span class='line'><span class="c1"># ..</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>user.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># ..</span>
+</span><span class='line'><span class="n">field</span> <span class="ss">:time_zone</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="nb">String</span>
+</span><span class='line'><span class="c1"># ..</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can see a very nice select element with all the timezones the world has to offer. In the above example, the US
+timezones will show before the rest of the world. But what do you do to validate the timezones? You just have to drop
+the below in to your model.</p>
+
+<figure class='code'><figcaption><span>user.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># ..</span>
+</span><span class='line'><span class="n">validates_inclusion_of</span> <span class="ss">:time_zone</span><span class="p">,</span> <span class="ss">:in</span> <span class="o">=&gt;</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">.</span><span class="n">zones_map</span> <span class="p">{</span> <span class="o">|</span><span class="n">m</span><span class="o">|</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="p">},</span> <span class="ss">:message</span> <span class="o">=&gt;</span> <span class="s2">&quot;is not a valid Time Zone&quot;</span>
+</span><span class='line'><span class="c1"># ..</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simple!!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/02/cascading-deletion-with-carrierwave-and-mongoid/">Cascading Deletion With Carrierwave and Mongoid</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-02T20:51:00+11:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://github.com/jnicklas/carrierwave">Carrierwave</a> is an awesome gem for
+making file uploads and image processing easy
+within Ruby on Rails. I&#8217;m currently testing it out with <a href="http://mongodb.org">MongoDB</a>
+and GridFS using
+<a href="http://mongoid.org">Mongoid</a> and it&#8217;s working almost seamlessly. What took me a days of work with
+PHP/Zend Framework now takes me an hour in Rails; just awesome, I think I might
+actually go and relax for a couple of hours with the time I&#8217;ve saved =).</p>
+
+<p>The problem I&#8217;m having at the moment is that I&#8217;m mounting files in an embedded
+document; when I delete the parent document, the delete does not bubble down the
+the embedded document. This results in the files not been deleted from GridFS
+even though the parent document has been destroyed.</p>
+
+<p>This is how I got around the issue. By setting a hook on the after_destroy
+callback method in the parent model.</p>
+
+<figure class='code'><figcaption><span>Post.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Post</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Document</span>
+</span><span class='line'>  <span class="n">embeds_many</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">&quot;PostImage&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">after_destroy</span> <span class="ss">:delete_images!</span>
+</span><span class='line'>
+</span><span class='line'> <span class="c1"># ..</span>
+</span><span class='line'> <span class="c1"># ..</span>
+</span><span class='line'> <span class="c1"># ..</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">delete_images!</span>
+</span><span class='line'>    <span class="n">images</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">image</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">image</span><span class="o">.</span><span class="n">remove_image!</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>PostImage.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostImage</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Document</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:image</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mount_uploader</span> <span class="ss">:image</span><span class="p">,</span> <span class="no">PostImageUploader</span>
+</span><span class='line'>  <span class="n">embedded_in</span> <span class="ss">:post</span><span class="p">,</span> <span class="ss">:inverse_of</span> <span class="o">=&gt;</span> <span class="ss">:images</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/">Extending Backbone classes in CoffeeScript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/14/backbone-dot-js-mixins/">Backbone.js mixins</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/13/low-fire-dangers-new-blog/">Low Fire Danger&#8217;s new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/">lightModal - a lightweight lightbox/modal in coffeescript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/">Maintainable JS MVC with Backbone.js</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - Low Fire Danger -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

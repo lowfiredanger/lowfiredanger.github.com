@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lightmodal</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="/javascripts/libs/jquery-1.6.4.min.js"></script>
+
+  <link rel="stylesheet" href="/javascripts/libs/prettify/desert.css" />
+  <script src="/javascripts/libs/prettify/prettify.js" type="text/javascript"></script>
+  
+  <script src="/opensource/lightModal/assets/jquery.lightModal.js"></script>
+  <link rel="stylesheet" href="/opensource/lightModal/assets/lightModal.css" />
+
+  <!-- This stylesheet is not required -->
+  <link rel="stylesheet" href="/opensource/lightModal/assets/page.css" />
+
+  <script>
+  	$(document).ready(function(){
+  		$('code').addClass('prettyprint');
+  		prettyPrint();
+  	});
+  </script>
+</head>
+	<body>
+		<section>
+			<h1><span>light</span>Modal</h1>
+			<h3>YALB? (Yet Another Light Box?)</h3>
+			<p>
+				It was really hard to find a modal/lightbox that could let you put an instance of tinyMCE inside, so we built this one.
+			</p>
+			<p>
+				We built it to use on our product <a href="http://lessplan.com" title="Easy lesson plan template maker">LessPlan</a>, a web application to help teachers generate and share lesson plans.
+			</p>
+      <a class="btn" href="https://github.com/sonnymai/jquery.lightModal">Download the source on GitHub</a>
+		</section>
+
+		<section>
+			<h3>Features</h3>
+			<ul>
+				<li>Custom callbacks for onShow and onHide</li>
+				<li>Click overlay to hide</li>
+				<li>Disablable close button</li>
+			</ul>
+		</section>
+
+		<section>
+			<h3>How</h3>
+			<p>
+				Typical modal/lightbox plugins clone markup and reinsert it into the plugin's own container. This works fine until you have javascript bound to elements or iframes. 
+				lightModal, takes a different approach by making the original content container the lightbox, thus keeping any javascript bindings.
+			</p>
+		</section>
+
+		<section>
+			<h3>Usage</h3>
+
+			<h4>Basic markup</h4>
+			<pre><code>
+	&lt;a id="modal_trigger_1" class="btn" href="#modal_1"&gt;Open modal&lt;/a&gt;
+
+	&lt;div id="modal_1"&gt;
+	    &lt;h2&gt;I'm a modal&lt;/h2&gt;
+	    &lt;p&gt;Put anything inside&lt;/p&gt;
+	&lt;/div&gt;
+			</code></pre>
+			<h4>Basic use</h4>
+			<p>This is the most basic example</p>
+
+			<pre><code>
+	     $("#modal_trigger_1").lightModal();
+			</code></pre>
+			
+			<!-- Basic usage code -->
+			<a id="modal_trigger_1" class="btn" href="#modal_1">Basic use demo</a>
+			<div id="modal_1">
+				<h2>I'm a modal</h2>
+				<p>Put anything inside</p>
+			</div>
+
+			<script>
+		      $("#modal_trigger_1").lightModal();
+			</script>
+		
+
+      <h4>Callbacks onHide and onOpen</h4>
+      <p>lightModal lets you define a function that will execute on hide and on close of the modal/lightbox.</p>
+
+      <pre><code>
+       $("#modal_trigger_2").lightModal({
+        onHide: function(){
+          alert("I've hidden myself")
+        },
+        onShow: function(){
+          alert("Well hello there!")
+        }
+       });
+      </code></pre>
+
+      <!-- Callback usage code -->
+      <a id="modal_trigger_2" class="btn" href="#modal_2">Demo callbacks</a>
+      <div id="modal_2">
+        <h2>Click overlay to hide</h2>
+        <p>If you want users to be able to hide the modal box when they click outside of it,
+         then this is the option for you</p>
+      </div>
+
+      <script>
+        $("#modal_trigger_2").lightModal({
+          onHide: function(){
+            alert("I've hidden myself")
+          },
+          onShow: function(){
+            alert("Well hello there!")
+          }
+        });
+      </script>
+
+			<h4>Click overlay to close</h4>
+			<p>If you don't want to </p>
+
+			<pre><code>
+	     $("#modal_trigger_3").lightModal({
+	     	overlayDisable: true
+	     });
+			</code></pre>
+
+			<!-- Overlay click to close usage code -->
+			<a id="modal_trigger_3" class="btn" href="#modal_3">Demo overlay click to hide</a>
+			<div id="modal_3">
+				<h3>Click outside of me</h3>
+				<p>This modal/lightbox will close when you click outside</p>
+			</div>
+
+			<script>
+        $("#modal_trigger_3").lightModal({
+        	overlayDisable: true
+        });
+			</script>
+		</section>
+
+		<section>
+			<h3>Options</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Option key</th>
+						<th>Explanation</th>
+						<th>Default</th>
+					</tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              modalContainer
+            </td>
+            <td>
+              Specify the class or id of the container of the element to place inside the modal box
+            </td>
+            <td>
+              Uses the value of the href attribute. e.g. &lt;a href=&quot;#foo&quot;&gt;Open&lt;/a&gt; will open open up the contents inside a contained with an id of "foo"
+            </td>
+          </tr>
+          <tr>
+            <td>
+              width
+            </td>
+            <td>
+              Width of the modal
+            </td>
+            <td>
+              auto
+            </td>
+          </tr>
+          <tr>
+            <td>
+              padding
+            </td>
+            <td>
+              Padding on the modal container
+            </td>
+            <td>
+              36
+            </td>
+          </tr>
+          <tr>
+            <td>
+              topMargin
+            </td>
+            <td>
+              Margin at the top of the modal container
+            </td>
+            <td>
+              36
+            </td>
+          </tr>
+          <tr>
+            <td>
+              closeButtonDisable
+            </td>
+            <td>
+              Disable the close button on the top right hand side of the modal
+            </td>
+            <td>
+              false
+            </td>
+          </tr>
+          <tr>
+            <td>
+              overlayDisable
+            </td>
+            <td>
+              When set to true, will allow clicking on the overlay outside of the lightbox to hide
+              the modal/lightbox.
+            </td>
+            <td>
+              false
+            </td>
+          </tr>
+          <tr>
+            <td>
+              overlayHtml
+            </td>
+            <td>
+              The overlay (semi transparent thing in the background) html, you can customise it to your own liking
+            </td>
+            <td>
+              &lt;div class=&quot;light-modal-overlay&quot;&gt;&lt;/div&gt;
+            </td>
+          </tr>
+          <tr>
+            <td>
+              onShow
+            </td>
+            <td>
+              Callback which fires after the modal/lightbox is displayed
+            </td>
+            <td>
+              none
+            </td>
+          </tr>
+          <tr>
+						<td>
+							onHide
+						</td>
+						<td>
+							Callback which fires after the modal/lightbox is hidden
+						</td>
+						<td>
+							none
+						</td>
+					</tr>
+        </tbody>
+			</table>
+		</section>
+
+    <section>
+      <h3>Get it</h3>
+      <a class="btn" href="https://github.com/sonnymai/jquery.lightModal">View and download on GitHub</a>
+    </section>
+
+
+		<footer>
+			<p>Happily made by <a href="http://twitter.com/sonny_mai">Sonny Mai</a> for <a href="http://lowfiredanger.com.au">Low Fire Danger</a>
+		</footer>
+
+
+		<script>
+	      $("#modal_trigger_1").lightModal();
+		</script>
+
+
+	</body>
+</html>

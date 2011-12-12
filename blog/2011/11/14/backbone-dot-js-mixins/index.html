@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Backbone.js mixins - Low Fire Danger</title>
+  <meta name="author" content="Low Fire Danger">
+
+  
+  <meta name="description" content="Backbone.js is a great javascript mvc framework to create frontend js heavy applications. What happens when there you start building your backbone.js &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://lowfiredanger.github.com/blog/2011/11/14/backbone-dot-js-mixins">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Low Fire Danger" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Low Fire Danger</a></h1>
+  
+    <h2>Engineered web applications</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:lowfiredanger.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+<ul class="main-navigation">
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/opensource">Open sourced</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Backbone.js Mixins</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-14T00:49:00+11:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://documentcloud.github.com/backbone/">Backbone.js</a> is a great javascript mvc framework to create frontend js heavy applications.</p>
+
+<p>What happens when there you start building your backbone.js app but find that there is substantial boilerplate code that you want to reuse?</p>
+
+<p>One cool feature, that&#8217;s not necessarily a part of backbone.js is mixins. If you&#8217;re familiar with Ruby, then it should be a familiar concept. Mixins are basically a way to inherit another class, or module and be able to use the inherited class&#8217;s functions/methods.</p>
+
+<p>To create a mixin in backbone, you use underscores nifty <code>_.extend()</code> method to allow an object to inherit some other objects methods.</p>
+
+<p>Take the following silly example. If you wanted to reuse the functions in the ComplexMaths object, how would you do it with <code>_.extend()</code>?</p>
+
+<figure class='code'><figcaption><span>complex_maths.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">ComplexMaths</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">addition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">number1</span><span class="p">,</span> <span class="nx">number2</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">number1</span> <span class="o">+</span> <span class="nx">number2</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simple</p>
+
+<figure class='code'><figcaption><span>calculator.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Calculator</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">_</span><span class="p">.</span><span class="nx">bindAll</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;blah...&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ..</span>
+</span><span class='line'>  <span class="c1">// ..</span>
+</span><span class='line'>  <span class="c1">// ..</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Mixin here</span>
+</span><span class='line'><span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Calculator</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">ComplexMaths</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The final line of the script above, underscore accepts the destination object <code>Calculator.prototype</code> and duplicates the properties inside source object <code>ComplexMaths</code> into <code>Calculator.prototype</code>.</p>
+
+<p>Now you have the power to create whole libraries of reusable useful stuff!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Sonny Mai</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-14T00:49:00+11:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/backbone-js/'>Backbone.js</a>, <a class='category' href='/blog/categories/javascript-/'>Javascript,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/11/13/low-fire-dangers-new-blog/" title="Previous Post: Low Fire Danger's new blog">&laquo; Low Fire Danger's new blog</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/" title="next Post: Extending Backbone classes in CoffeeScript">Extending Backbone classes in CoffeeScript &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/">Extending Backbone classes in CoffeeScript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/14/backbone-dot-js-mixins/">Backbone.js mixins</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/13/low-fire-dangers-new-blog/">Low Fire Danger's new blog</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/">lightModal - a lightweight lightbox/modal in coffeescript</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/">Maintainable JS MVC with Backbone.js</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - Low Fire Danger -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

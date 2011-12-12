@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | Low Fire Danger]]></title>
+  <link href="http://lowfiredanger.github.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://lowfiredanger.github.com/"/>
+  <updated>2011-12-13T09:26:07+11:00</updated>
+  <id>http://lowfiredanger.github.com/</id>
+  <author>
+    <name><![CDATA[Low Fire Danger]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Validate timezones in ruby on rails]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/04/13/validate-timezones-in-ruby-on-rails/"/>
+    <updated>2011-04-13T18:41:00+10:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/04/13/validate-timezones-in-ruby-on-rails</id>
+    <content type="html"><![CDATA[<p>Rails makes it too simple to allow users to specify their timezone. All you have to do is add the following to your form:</p>
+
+<p>``` ruby _form.html.erb</p>
+
+<h1>..</h1>
+
+<p>&lt;%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %></p>
+
+<h1>..</h1>
+
+<p>```</p>
+
+<p>``` ruby user.rb</p>
+
+<h1>..</h1>
+
+<p>field :time_zone, :type => String</p>
+
+<h1>..</h1>
+
+<p>```</p>
+
+<p>Now you can see a very nice select element with all the timezones the world has to offer. In the above example, the US
+timezones will show before the rest of the world. But what do you do to validate the timezones? You just have to drop
+the below in to your model.</p>
+
+<p>``` ruby user.rb</p>
+
+<h1>..</h1>
+
+<p>validates_inclusion_of :time_zone, :in => ActiveSupport::TimeZone.zones_map { |m| m.name }, :message => "is not a valid Time Zone"</p>
+
+<h1>..</h1>
+
+<p>```</p>
+
+<p>Simple!!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Cascading deletion with Carrierwave and Mongoid]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/04/02/cascading-deletion-with-carrierwave-and-mongoid/"/>
+    <updated>2011-04-02T20:51:00+11:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/04/02/cascading-deletion-with-carrierwave-and-mongoid</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/jnicklas/carrierwave">Carrierwave</a> is an awesome gem for
+making file uploads and image processing easy
+within Ruby on Rails. I'm currently testing it out with <a href="http://mongodb.org">MongoDB</a>
+and GridFS using
+<a href="http://mongoid.org">Mongoid</a> and it's working almost seamlessly. What took me a days of work with
+PHP/Zend Framework now takes me an hour in Rails; just awesome, I think I might
+actually go and relax for a couple of hours with the time I've saved =).</p>
+
+<p>The problem I'm having at the moment is that I'm mounting files in an embedded
+document; when I delete the parent document, the delete does not bubble down the
+the embedded document. This results in the files not been deleted from GridFS
+even though the parent document has been destroyed.</p>
+
+<p>This is how I got around the issue. By setting a hook on the after_destroy
+callback method in the parent model.</p>
+
+<p>``` ruby Post.rb
+class Post
+  include Mongoid::Document
+  embeds_many :images, :class_name => "PostImage"</p>
+
+<p>  after_destroy :delete_images!</p>
+
+<p> # ..
+ # ..
+ # ..</p>
+
+<p>  def delete_images!</p>
+
+<pre><code>images.each do |image|
+  image.remove_image!
+end
+</code></pre>
+
+<p>  end
+end
+<code>
+</code> ruby PostImage.rb
+class PostImage
+  include Mongoid::Document</p>
+
+<p>  attr_accessible :image</p>
+
+<p>  mount_uploader :image, PostImageUploader
+  embedded_in :post, :inverse_of => :images</p>
+
+<p>end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

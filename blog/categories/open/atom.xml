@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Open | Low Fire Danger]]></title>
+  <link href="http://lowfiredanger.github.com/blog/categories/open/atom.xml" rel="self"/>
+  <link href="http://lowfiredanger.github.com/"/>
+  <updated>2011-12-13T09:26:07+11:00</updated>
+  <id>http://lowfiredanger.github.com/</id>
+  <author>
+    <name><![CDATA[Low Fire Danger]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[lightModal - a lightweight lightbox/modal in coffeescript]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/"/>
+    <updated>2011-11-12T22:35:00+11:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript</id>
+    <content type="html"><![CDATA[<p>I recently made a really lightweight modal box to use on one of our projects <a href="http://lessplan.com" title="Easily manage Lesson plans for teachers">LessPlan</a>. There was a need to have a instance of tinyMCE within a modal/lightbox when creating a lesson plan.</p>
+
+<p>What I found was most existing modal/lightbox plugins was that they were incompatible with tinyMCE because they cloned the contents of a specified div before placing it into the actual lightbox container.</p>
+
+<p>LightModal does away with the cloning and makes the content itself turn into a lightbox, therefore throwing away the need to clone the html.</p>
+
+<p>It's written in CoffeeScript as a jquery plugin and includes tests written with Jasmine BDD testing framework. Released under the MIT licence.</p>
+
+<p><a href="/opensource/lightModal">Get the source and demo here</a></p>
+]]></content>
+  </entry>
+  
+</feed>
