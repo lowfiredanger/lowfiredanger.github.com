@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Backbone.js | Low Fire Danger]]></title>
   <link href="http://lowfiredanger.github.com/blog/categories/backbone-js/atom.xml" rel="self"/>
   <link href="http://lowfiredanger.github.com/"/>
-  <updated>2011-12-13T09:26:07+11:00</updated>
+  <updated>2011-12-13T19:27:42+11:00</updated>
   <id>http://lowfiredanger.github.com/</id>
   <author>
     <name><![CDATA[Low Fire Danger]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Extending Backbone classes in CoffeeScript]]></title>
+    <title type="html"><![CDATA[Extending Backbone.js classes in CoffeeScript]]></title>
     <link href="http://lowfiredanger.github.com/blog/2011/12/12/extending-backbone-classes-in-coffeescript/"/>
     <updated>2011-12-12T22:10:00+11:00</updated>
     <id>http://lowfiredanger.github.com/blog/2011/12/12/extending-backbone-classes-in-coffeescript</id>
@@ -76,6 +76,8 @@ So you'll get alerts in the following order:</p>
 <li>Hello (called from the <code>super</code> inside <code>MultiLingalGreeter</code>)</li>
 </ol>
 
+
+<p>Conclusion: Backbone.js + Coffeescript is sexy isn't it?</p>
 ]]></content>
   </entry>
   
