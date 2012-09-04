@@ -9,7 +9,7 @@
   <meta name="author" content="Low Fire Danger">
 
   
-  <meta name="description" content="Here&#8217;s a very quick how-to on extending backbone classes and over riding their methods in coffeescript. You can even call super; that will let &hellip;">
+  <meta name="description" content="I&#8217;ve noticed error handling is often an afterthought in javascript I&#8217;ve seen. Good error handling can make your javascript more easier to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +63,175 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/04/basic-error-handling-in-javascript/">Basic Error Handling in Javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-04T21:59:00+10:00" pubdate data-updated="true">Sep 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve noticed error handling is often an afterthought in javascript I&#8217;ve seen. Good error handling can make your javascript more easier to debug, more efficient and more robust.</p>
+
+<h2>A less than optimal way to catch errors</h2>
+
+<p>A less optimal way to catch errors and notify the caller is by returning a special value such as undefined, or a boolean or whatever. Below is an example.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">doubleYourAge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">age</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">age</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="nx">isNAN</span><span class="p">(</span><span class="nx">age</span><span class="p">)){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">age</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Call the function</span>
+</span><span class='line'><span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">doubleYourAge</span><span class="p">(</span><span class="o">-</span><span class="mi">18</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Your input is invalid&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This works great, but it means that everytime you call <code>doubleYourAge</code>, you are forced to perform a check. This can be inefficient if you&#8217;re calling the function multiple times in your scripts.</p>
+
+<h2>Throwing and catching basic errors</h2>
+
+<p>A better way, but still not the best, is to throw an error.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">cats_input</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">number_of_cats</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s1">&#39;How many cats do you own?&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">number_of_cats</span><span class="p">)</span> <span class="o">||</span> <span class="nx">number_of_cats</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="s1">&#39;Not a valid number&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;You have &quot;</span> <span class="o">+</span> <span class="nx">number_of_cats</span> <span class="o">+</span> <span class="s2">&quot; cats! That&#39;s fantastic&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Call the function</span>
+</span><span class='line'><span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">cats_input</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;We caught an error: &#39;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above code is better than the first example, it only needs to run the error handling code if an error actually occurs, and no checking needs to be done everytime the funciton is called. Depending on your use-case, you might want to catch specific erros and conditions. This is where selective catching of errors is useful.</p>
+
+<h2>Selective catching of errors</h2>
+
+<p>The script below does the same thing as above, only this time, we instantiate Error objects which allows us to:
+- throw specific errors
+- catch and handle each error condition individually.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">not_a_number_error</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Cat input is not a number&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">below_zero_error</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Cat input is smaller than zero&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">cats_input</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">number_of_cats</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s1">&#39;How many cats do you own?&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">number_of_cats</span><span class="p">)){</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="nx">not_a_number_error</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">number_of_cats</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="nx">below_zero_error</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;You have &quot;</span> <span class="o">+</span> <span class="nx">number_of_cats</span> <span class="o">+</span> <span class="s2">&quot; cats! That&#39;s fantastic&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Call the function</span>
+</span><span class='line'><span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">cats_input</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">invalid_cats_error</span> <span class="p">){</span>
+</span><span class='line'>          <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;You didn&#39;t enter the a number&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">invalid_cats_error</span> <span class="p">){</span>
+</span><span class='line'>          <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Your number is less than zero&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There you go, simple, easy error handling with javascript.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -943,6 +1112,10 @@ callback method in the parent model.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/09/04/basic-error-handling-in-javascript/">Basic error handling in javascript</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2011/12/12/extending-backbone-classes-in-coffeescript/">Extending Backbone.js classes in CoffeeScript</a>
       </li>
     
@@ -956,10 +1129,6 @@ callback method in the parent model.</p>
     
       <li class="post">
         <a href="/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/">lightModal - a lightweight lightbox/modal in coffeescript</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/">Maintainable JS MVC with Backbone.js</a>
       </li>
     
   </ul>
