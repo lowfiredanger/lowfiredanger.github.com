@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Low Fire Danger]]></title>
   <link href="http://lowfiredanger.github.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://lowfiredanger.github.com/"/>
-  <updated>2012-09-04T17:46:03+10:00</updated>
+  <updated>2012-09-13T11:50:03+10:00</updated>
   <id>http://lowfiredanger.github.com/</id>
   <author>
     <name><![CDATA[Low Fire Danger]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Basic error handling in javascript]]></title>
+    <link href="http://lowfiredanger.github.com/blog/2012/09/04/basic-error-handling-in-javascript/"/>
+    <updated>2012-09-04T21:59:00+10:00</updated>
+    <id>http://lowfiredanger.github.com/blog/2012/09/04/basic-error-handling-in-javascript</id>
+    <content type="html"><![CDATA[<p>I've noticed error handling is often an afterthought in javascript I've seen. Good error handling can make your javascript more easier to debug, more efficient and more robust.</p>
+
+<h2>A less than optimal way to catch errors</h2>
+
+<p>A less optimal way to catch errors and notify the caller is by returning a special value such as undefined, or a boolean or whatever. Below is an example.</p>
+
+<p>``` javascript
+var doubleYourAge = function(age){</p>
+
+<pre><code>if(age &lt; -1 || isNAN(age)){
+    return undefined;
+}else{
+    return age * 2;
+}
+</code></pre>
+
+<p>};</p>
+
+<p>// Call the function
+if(typeof doubleYourAge(-18) === 'undefined'){</p>
+
+<pre><code>alert('Your input is invalid')
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>This works great, but it means that everytime you call <code>doubleYourAge</code>, you are forced to perform a check. This can be inefficient if you're calling the function multiple times in your scripts.</p>
+
+<h2>Throwing and catching basic errors</h2>
+
+<p>A better way, but still not the best, is to throw an error.</p>
+
+<p>``` javascript</p>
+
+<p>var cats_input = function(){</p>
+
+<pre><code>var number_of_cats = prompt('How many cats do you own?');
+if (isNaN(number_of_cats) || number_of_cats &lt; 0){
+    throw 'Not a valid number';
+}
+
+alert("You have " + number_of_cats + " cats! That's fantastic");
+</code></pre>
+
+<p>}</p>
+
+<p>// Call the function
+try {</p>
+
+<pre><code>cats_input();
+</code></pre>
+
+<p>} catch (e) {</p>
+
+<pre><code>alert('We caught an error: ' + e);
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>The above code is better than the first example, it only needs to run the error handling code if an error actually occurs, and no checking needs to be done everytime the funciton is called. Depending on your use-case, you might want to catch specific erros and conditions. This is where selective catching of errors is useful.</p>
+
+<h2>Selective catching of errors</h2>
+
+<p>The script below does the same thing as above, only this time, we instantiate Error objects which allows us to:</p>
+
+<ul>
+<li>throw specific errors</li>
+<li>catch and handle each error condition individually.</li>
+</ul>
+
+
+<p>``` javascript</p>
+
+<p>var not_a_number_error = new Error('Cat input is not a number');
+var below_zero_error = new Error('Cat input is smaller than zero');</p>
+
+<p>var cats_input = function(){</p>
+
+<pre><code>var number_of_cats = prompt('How many cats do you own?');
+if (isNaN(number_of_cats)){
+    throw not_a_number_error;
+}
+if (number_of_cats &lt; 0){
+    throw below_zero_error;
+}
+
+alert("You have " + number_of_cats + " cats! That's fantastic");
+</code></pre>
+
+<p>}</p>
+
+<p>// Call the function
+try {</p>
+
+<pre><code>cats_input();
+</code></pre>
+
+<p>} catch (e) {</p>
+
+<pre><code>if ( e != invalid_cats_error ){
+    alert("You didn't enter the a number");
+}else if ( e != invalid_cats_error ){
+    alert('Your number is less than zero');
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>There you go, simple, easy error handling with javascript.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Closures in javascript]]></title>

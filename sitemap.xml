@@ -4,66 +4,72 @@
         <loc>
             http://lowfiredanger.github.com/blog/2011/04/02/cascading-deletion-with-carrierwave-and-mongoid/
         </loc>
-        <lastmod>2012-04-18T09:22:14+10:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://lowfiredanger.github.com/blog/2011/04/13/validate-timezones-in-ruby-on-rails/
         </loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://lowfiredanger.github.com/blog/2011/04/15/inheritance-in-object-oriented-javascript/
         </loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>http://lowfiredanger.github.com/blog/2011/04/20/closures-in-javascript/</loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://lowfiredanger.github.com/blog/2011/07/05/maintainable-js-mvc-with-backbone-dot-js/
         </loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://lowfiredanger.github.com/blog/2011/11/12/lightmodal-a-lightweight-lightbox-slash-modal-in-coffeescript/
         </loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>http://lowfiredanger.github.com/blog/2011/11/13/low-fire-dangers-new-blog/</loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>http://lowfiredanger.github.com/blog/2011/11/14/backbone-dot-js-mixins/</loc>
-        <lastmod>2012-04-18T09:22:14+10:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://lowfiredanger.github.com/blog/2011/12/12/extending-backbone-classes-in-coffeescript/
         </loc>
-        <lastmod>2011-12-13T17:59:44+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://lowfiredanger.github.com/blog/2012/09/04/basic-error-handling-in-javascript/
         </loc>
-        <lastmod>2012-09-04T17:46:03+10:00</lastmod>
+        <lastmod>2012-09-11T09:05:17+10:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://lowfiredanger.github.com/blog/2012/09/05/personifying-your-website-and-webapps/
+        </loc>
+        <lastmod>2012-09-13T11:50:03+10:00</lastmod>
     </url>
     <url>
         <loc>http://lowfiredanger.github.com/blog/archives/</loc>
-        <lastmod>2012-09-04T17:46:03+10:00</lastmod>
+        <lastmod>2012-09-13T11:50:03+10:00</lastmod>
     </url>
     <url>
         <loc>http://lowfiredanger.github.com/blog/</loc>
-        <lastmod>2012-09-04T17:46:03+10:00</lastmod>
+        <lastmod>2012-09-13T11:50:03+10:00</lastmod>
     </url>
     <url>
         <loc>http://lowfiredanger.github.com/opensource/</loc>
-        <lastmod>2011-12-04T23:19:21+11:00</lastmod>
+        <lastmod>2012-09-07T08:34:49+10:00</lastmod>
     </url>
 </urlset>
